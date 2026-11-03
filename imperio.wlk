@@ -1,22 +1,33 @@
-class Siembra {
-    var property tiempo = 0
-    var property horasExtras = 0
-    var property esfuerzo = 0
 
-    method desgaste() {
-        if (horasExtras == 0) {
-            return 1
-        } else {
-            1 + horasExtras
-        }
-    }
+class Tarea {
+    var property tiempo
+
     method recursosProducidos() {
-        return 50*(tiempo - self.desgaste()) * esfuerzo
+        return 50 * (tiempo - self.desgaste()) * self.esfuerzo()
     }
 
+    method desgaste()
+
+    method esfuerzo()
 }
-class SiembraDelValle inherits Siembra {
-    var property esEpocaDeLluvias 
+
+class Siembra inherits Tarea {
+    var property esfuerzo
+    var horasExtras = 0
+
+    override method esfuerzo() {
+        return esfuerzo
+    }
+
+    override method desgaste() {
+        return 1 + self.horasExtras()
+    }
+
+    method horasExtras()
+}
+
+class SiembraEnElValle inherits Siembra {
+    var property esEpocaDeLluvias
 
     override method recursosProducidos() {
         if (esEpocaDeLluvias) {
@@ -25,28 +36,47 @@ class SiembraDelValle inherits Siembra {
             return super()
         }
     }
-}
 
-class SiembraDeTerrazas inherits Siembra {
-
-    override method recursosProducidos() {
-        return super() *3
+    override method horasExtras() {
+        if (tiempo > 8) {
+            return tiempo - 8
+        } else {
+            return 0
+        }
     }
 }
 
-class Mensaje inherits Siembra {
+class SiembraEnTerrazas inherits Siembra {
 
+    override method recursosProducidos() {
+        return super() * 3
+    }
+
+    override method horasExtras() {
+        if (tiempo > 6) {
+            return tiempo - 6
+        } else {
+            return 0
+        }
+    }
+}
+
+class Mensaje inherits Tarea {
     override method esfuerzo() {
+        return 1.4
+    }
+
+    override method desgaste() {
         return tiempo / 4
     }
 }
 
 class MensajeImperial inherits Mensaje {
-
     override method esfuerzo() {
         return 1.8
     }
+
     override method desgaste() {
-        return ((tiempo - 2) / 4).max(1)
+        return (super() - 2).max(1)
     }
 }
