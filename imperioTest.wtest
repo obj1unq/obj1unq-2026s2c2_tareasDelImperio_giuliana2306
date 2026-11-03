@@ -3,27 +3,52 @@ import habitantes.*
 
 describe "Imperio Inca" {
   test "Tareas de siembra" {
-    const siembraDePapa = new SiembraEnElValle(esfuerzo = 1.2, esEpocaDeLluvias = false, tiempo = 4)
-    const siembraDeMaiz = new SiembraEnTerrazas(esfuerzo = 1.5, tiempo = 5)
-    const rutaTamboCentral = new Mensaje(tiempo = 4)
-    const caminoDelSapaInca = new MensajeImperial(tiempo = 4)
+    const siembraDePapa = new SiembraEnElValle(esfuerzo =1.2, esEpocaDeLluvias = false)
+    const siembraDeMaiz = new SiembraEnTerrazas(esfuerzo =1.5)
+    const rutaTamboCentral = new Mensaje()
+    const caminoDelSapaInca = new MensajeImperial()
 
-    assert.equals(180, siembraDePapa.recursosProducidos())
+    assert.equals(180, siembraDePapa.recursosProducidos(4))
     siembraDePapa.tiempo(10)
-    assert.equals(420, siembraDePapa.recursosProducidos())
+    assert.equals(420, siembraDePapa.recursosProducidos(10))
 
-    assert.equals(900, siembraDeMaiz.recursosProducidos())
+    assert.equals(900, siembraDeMaiz.recursosProducidos(5))
     siembraDeMaiz.tiempo(7)
-    assert.equals(1125, siembraDeMaiz.recursosProducidos())
+    assert.equals(1125, siembraDeMaiz.recursosProducidos(7))
 
-    assert.equals(210, rutaTamboCentral.recursosProducidos())
+    assert.equals(210, rutaTamboCentral.recursosProducidos(4))
     rutaTamboCentral.tiempo(10)
-    assert.equals(525, rutaTamboCentral.recursosProducidos())
+    assert.equals(525, rutaTamboCentral.recursosProducidos(10))
 
-    assert.equals(270, caminoDelSapaInca.recursosProducidos())
+    assert.equals(270, caminoDelSapaInca.recursosProducidos(4))
     caminoDelSapaInca.tiempo(10)
-    assert.equals(810, caminoDelSapaInca.recursosProducidos())
+    assert.equals(810, caminoDelSapaInca.recursosProducidos(10))
   }
+  test "Habitantes" {
+    const cusi = new Campesino(energia = 100, tiempoDeEjercitacion = 4)
+    const tupac = new Elite(energia=200)
 
+    const siembraDePapa = new SiembraEnElValle(esfuerzo =1.2, esEpocaDeLluvias = false)
+    const siembraDeMaiz = new SiembraEnTerrazas(esfuerzo =1.5)
+    const rutaTamboCentral = new Mensaje()
+    const caminoDelSapaInca = new MensajeImperial()
+
+    cusi.realizarTarea(siembraDePapa)
+    assert.equals(82, cusi.energia())
+    
+    cusi.energia(100)
+    cusi.realizarTarea(rutaTamboCentral)
+    assert.equals(79, cusi.energia())
+
+    cusi.energia(15)
+    assert.throwsException({cusi.realizarTarea(siembraDePapa)})
+
+    tupac.realizarTarea(siembraDeMaiz)
+    assert.equals(111.25, tupac.energia())
+    
+    tupac.energia(200)
+     tupac.realizarTarea(caminoDelSapaInca)
+    assert.equals(137.5, tupac.energia())
+  }
 }
 

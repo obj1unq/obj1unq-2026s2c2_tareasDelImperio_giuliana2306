@@ -1,12 +1,10 @@
 
 class Tarea {
-    var property tiempo
 
-    method recursosProducidos() {
-        return 50 * (tiempo - self.desgaste()) * self.esfuerzo()
+    method recursosProducidos(_tiempo) {
+        return 50 * (_tiempo - self.desgaste(_tiempo)) * self.esfuerzo()
     }
-
-    method desgaste()
+    method desgaste(_tiempo)
 
     method esfuerzo()
 }
@@ -19,27 +17,27 @@ class Siembra inherits Tarea {
         return esfuerzo
     }
 
-    override method desgaste() {
-        return 1 + self.horasExtras()
+    override method desgaste(_tiempo) {
+        return 1 + self.horasExtras(_tiempo)
     }
 
-    method horasExtras()
+    method horasExtras(_tiempo)
 }
 
 class SiembraEnElValle inherits Siembra {
     var property esEpocaDeLluvias
 
-    override method recursosProducidos() {
+    override method recursosProducidos(_tiempo) {
         if (esEpocaDeLluvias) {
             return 0
         } else {
-            return super()
+            return super(_tiempo)
         }
     }
 
-    override method horasExtras() {
-        if (tiempo > 8) {
-            return tiempo - 8
+    override method horasExtras(_tiempo) {
+        if (_tiempo > 8) {
+            return _tiempo - 8
         } else {
             return 0
         }
@@ -48,13 +46,13 @@ class SiembraEnElValle inherits Siembra {
 
 class SiembraEnTerrazas inherits Siembra {
 
-    override method recursosProducidos() {
-        return super() * 3
+    override method recursosProducidos(_tiempo) {
+        return super(_tiempo) * 3
     }
 
-    override method horasExtras() {
-        if (tiempo > 6) {
-            return tiempo - 6
+    override method horasExtras(_tiempo) {
+        if (_tiempo > 6) {
+            return _tiempo - 6
         } else {
             return 0
         }
@@ -66,8 +64,8 @@ class Mensaje inherits Tarea {
         return 1.4
     }
 
-    override method desgaste() {
-        return tiempo / 4
+    override method desgaste(_tiempo) {
+        return _tiempo / 4
     }
 }
 
@@ -76,7 +74,7 @@ class MensajeImperial inherits Mensaje {
         return 1.8
     }
 
-    override method desgaste() {
-        return (super() - 2).max(1)
+    override method desgaste(_tiempo) {
+        return (super(_tiempo) - 2).max(1)
     }
 }
