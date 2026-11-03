@@ -78,3 +78,32 @@ class MensajeImperial inherits Mensaje {
         return (super(_tiempo) - 2).max(1)
     }
 }
+
+class Aylu {
+    var colcas = #{}
+
+    method mejorColcaPara(_habitante) {
+        return colcas.max({colca => colca.recursosTotalProducidosPor(_habitante)})
+    }
+    method colcasSuavesPara(_habitante) {
+        return colcas.filter({colca => colca.tieneAlMenosUnaTareaQueProduceMenosDe200RecursosPara(_habitante)})
+    }  
+    method tareasMasExigentesPara(_habitante) {
+        return colcas.map({colca => colca.tareaMasExigentePara(_habitante)})
+    }
+}
+
+
+class Colca {
+    var tareas = []
+
+    method recursosTotalProducidosPor(_habitante) {
+        return tareas.sum({tarea => tarea.recursosProducidos(_habitante.tiempoDeEjercitacion())})
+    }
+    method tieneAlMenosUnaTareaQueProduceMenosDe200RecursosPara(_habitante) {
+        return tareas.any({tarea => tarea.recursosProducidos(_habitante.tiempoDeEjercitacion()) < 200})
+    }
+    method tareaMasExigentePara(_habitante) {
+        return tareas.max({tarea => tarea.recursosProducidos(_habitante.tiempoDeEjercitacion())})
+    }
+}

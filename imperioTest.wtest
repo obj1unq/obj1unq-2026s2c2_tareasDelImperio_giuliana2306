@@ -50,5 +50,22 @@ describe "Imperio Inca" {
      tupac.realizarTarea(caminoDelSapaInca)
     assert.equals(137.5, tupac.energia())
   }
+  test "Ayllu Real" {
+    const rutaTamboCentral = new Mensaje()
+    const caminoDelSapaInca = new MensajeImperial()
+    const siembraDePapa = new SiembraEnElValle(esfuerzo = 1.2, esEpocaDeLluvias = false)
+    const siembraDeMaiz = new SiembraEnTerrazas(esfuerzo = 1.5) // Asegurate de incluir las tareas que correspondan
+    
+    const colcaAgricola = new Colca(tareas = #{siembraDePapa, siembraDeMaiz})
+    const colcaCentral = new Colca(tareas = #{rutaTamboCentral, caminoDelSapaInca})
+    
+    const aylluReal = new Aylu(colcas = #{colcaAgricola, colcaCentral})
+
+    const tucap = new Elite(energia = 200)
+    const cusi = new Campesino(energia = 100, tiempoDeEjercitacion = 4)
+
+    assert.equals(colcaAgricola, aylluReal.mejorColcaPara(tucap))
+    assert.equals(colcaAgricola, aylluReal.mejorColcaPara(cusi))
+  }
 }
 
